@@ -1,8 +1,4 @@
-FROM ubuntu:latest
-LABEL authors="Iamnarendra"
-
-ENTRYPOINT ["top", "-b"]
-# Multi-stage build for smaller image
+# Stage 1: Build
 FROM maven:3.8.5-openjdk-17-slim AS build
 
 WORKDIR /app
@@ -18,8 +14,8 @@ COPY src ./src
 # Build application
 RUN mvn clean package -DskipTests
 
-# Runtime stage
-FROM openjdk:17-jdk-slim
+# Stage 2: Runtime (Use Eclipse Temurin instead of OpenJDK)
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
