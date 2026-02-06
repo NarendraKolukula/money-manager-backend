@@ -19,7 +19,14 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        
+
+        // Allow requests from your frontend
+        config.setAllowedOrigins(Arrays.asList(
+                "https://NarendraKolukula.github.io",  // GitHub Pages
+                "http://localhost:5173",            // Vite dev server
+                "http://localhost:3000"             // Create React App dev
+        ));
+
         // Parse allowed origins from configuration
         List<String> origins = Arrays.asList(allowedOrigins.split(","));
         config.setAllowedOrigins(origins);
@@ -40,7 +47,7 @@ public class CorsConfig {
         config.setMaxAge(3600L);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/**", config);
         
         return new CorsFilter(source);
     }
